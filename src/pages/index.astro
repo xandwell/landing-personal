@@ -11,6 +11,12 @@ const links = [
   <main class="page-shell">
     <div class="ambient ambient-one" aria-hidden="true"></div>
     <div class="ambient ambient-two" aria-hidden="true"></div>
+    <img
+      class="dvd-logo"
+      src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGdocmRmMHVkdG80NnNoY3dqcWp4cW5kZXpjcmFtbWlvcmpvZXpibyZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/m5JOLhZsV15j1MtkTE/giphy.gif"
+      alt=""
+      aria-hidden="true"
+    />
 
     <section class="hero" aria-labelledby="hero-title">
       <p class="eyebrow"><span class="eyebrow-line"></span> A little corner of the internet</p>
@@ -35,9 +41,53 @@ const links = [
       </div>
     </section>
 
-    <footer class="footer"><span>© {new Date().getFullYear()} Almas</span><span>Made with intention <span class="sparkle">✳</span></span></footer>
   </main>
 </Layout>
+
+<script>
+  const logo = document.querySelector<HTMLImageElement>('.dvd-logo');
+
+  if (logo) {
+    const startBouncing = () => {
+      let x = Math.random() * Math.max(0, window.innerWidth - logo.offsetWidth);
+      let y = Math.random() * Math.max(0, window.innerHeight - logo.offsetHeight);
+      let vx = (Math.random() < 0.5 ? -1 : 1) * 150;
+      let vy = (Math.random() < 0.5 ? -1 : 1) * 115;
+      let previousTime = performance.now();
+
+      const animate = (now: number) => {
+        const elapsed = Math.min((now - previousTime) / 1000, 0.05);
+        previousTime = now;
+
+        const maxX = Math.max(0, window.innerWidth - logo.offsetWidth);
+        const maxY = Math.max(0, window.innerHeight - logo.offsetHeight);
+        x += vx * elapsed;
+        y += vy * elapsed;
+
+        if (x <= 0 || x >= maxX) {
+          x = Math.min(maxX, Math.max(0, x));
+          vx *= -1;
+        }
+        if (y <= 0 || y >= maxY) {
+          y = Math.min(maxY, Math.max(0, y));
+          vy *= -1;
+        }
+
+        logo.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        requestAnimationFrame(animate);
+      };
+
+      logo.style.visibility = 'visible';
+      requestAnimationFrame(animate);
+    };
+
+    if (logo.complete && logo.naturalWidth > 0) {
+      startBouncing();
+    } else {
+      logo.addEventListener('load', startBouncing, { once: true });
+    }
+  }
+</script>
 
 <style>
   :global(*) { box-sizing: border-box; }
@@ -48,8 +98,8 @@ const links = [
   .ambient { position: absolute; z-index: -1; border-radius: 50%; filter: blur(1px); pointer-events: none; }
   .ambient-one { width: min(45vw, 600px); aspect-ratio: 1; top: -16%; left: -10%; background: radial-gradient(circle, rgba(247,219,59,.7), rgba(247,219,59,0) 70%); }
   .ambient-two { width: min(45vw, 580px); aspect-ratio: 1; right: -13%; bottom: -25%; background: radial-gradient(circle, rgba(93,178,87,.65), rgba(93,178,87,0) 70%); }
-  .footer { display: flex; align-items: center; justify-content: space-between; }
-  .hero { width: min(100%, 760px); margin: auto; padding: clamp(40px, 7vw, 76px) clamp(24px, 6vw, 64px); border: 1px solid rgba(255,255,255,.58); border-radius: 18px; background: rgba(255,255,240,.68); box-shadow: 0 24px 80px rgba(39,72,34,.12), inset 0 1px 0 rgba(255,255,255,.65); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+  .dvd-logo { position: fixed; z-index: 0; top: 0; left: 0; width: clamp(100px, 16vw, 160px); height: auto; opacity: .6; visibility: hidden; pointer-events: none; user-select: none; will-change: transform; }
+  .hero { position: relative; z-index: 1; width: min(100%, 760px); margin: auto; padding: clamp(40px, 7vw, 76px) clamp(24px, 6vw, 64px); border: 1px solid rgba(255,255,255,.58); border-radius: 18px; background: rgba(255,255,240,.68); box-shadow: 0 24px 80px rgba(39,72,34,.12), inset 0 1px 0 rgba(255,255,255,.65); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
   .eyebrow, .prompt { color: #858a7d; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
   .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 27px; }
   .eyebrow-line { width: 24px; height: 1px; background: #a5ad98; }
@@ -67,8 +117,6 @@ const links = [
   .social-icon svg { display: block; width: 17px; height: 17px; }
   .arrow { width: 13px; height: 13px; margin-left: auto; color: #969d8d; transition: transform .2s ease; }
   .social-link:hover .arrow { transform: translate(2px,-2px); }
-  .footer { min-height: 68px; border-top: 1px solid rgba(45,52,40,.16); color: #46533f; font-size: 11px; letter-spacing: .015em; }
-  .sparkle { margin-left: 4px; color: #398c42; }
-  @media (max-width: 600px) { .hero { padding: 48px 24px; } .divider { margin-top: 43px; } .social-link { flex: 1 1 140px; } .footer { min-height: 60px; font-size: 10px; } }
+  @media (max-width: 600px) { .dvd-logo { width: 112px; } .hero { padding: 48px 24px; } .divider { margin-top: 43px; } .social-link { flex: 1 1 140px; } }
   @media (prefers-reduced-motion: reduce) { .social-link, .arrow { transition: none; } }
 </style>
