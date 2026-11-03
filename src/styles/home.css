@@ -71,7 +71,7 @@ a { color: inherit; }
 .page-shell {
   min-height: 100svh;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   display: flex;
   flex-direction: column;
   padding: 0 clamp(24px, 7vw, 104px);
@@ -140,10 +140,10 @@ a { color: inherit; }
   padding: clamp(40px, 7vw, 76px) clamp(24px, 6vw, 64px);
   border: 1px solid rgba(255,255,255,.58);
   border-radius: 18px;
-  background: rgba(255,255,240,.68);
+  background: rgba(255,255,240,.54);
   box-shadow: 0 24px 80px rgba(39,72,34,.12), inset 0 1px 0 rgba(255,255,255,.65);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(32px) saturate(1.2);
+  -webkit-backdrop-filter: blur(32px) saturate(1.2);
 }
 
 .about {
@@ -154,10 +154,16 @@ a { color: inherit; }
   padding: 24px clamp(24px, 6vw, 64px);
   border: 1px solid rgba(255,255,255,.44);
   border-radius: 14px;
-  background: rgba(255,255,240,.42);
+  background: rgba(255,255,240,.36);
   color: #4f5848;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(26px) saturate(1.2);
+  -webkit-backdrop-filter: blur(26px) saturate(1.2);
+  scroll-margin-top: 24px;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hero { background: rgba(247,247,223,.92); }
+  .about { background: rgba(247,247,223,.88); }
 }
 
 .about h2 {
